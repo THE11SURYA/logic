@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAFE SEARCH</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #srch {
+        width: 50%;
+        padding: 8px;
+        margin: 10px;
+        background-color: aquamarine;
+        border-radius: 10%;
+    }
+
+    table {
+        background-color: aqua;
+        width: 100%;
+    }
+
+    th, td {
+        border: 4px solid;
+        padding: 8px;
+        text-align: left;
+    }
+</style>
+<script src="3.js"></script>
+</head>
+<body>
+<h1><u>CAFE SEARCH</u></h1>
+<input type="text" id="srch" placeholder="Enter Cafe Name">
+<table id="tbl">
+    <thead>
+        <tr>
+            <th>Name</th> <th>Street No</th> <th>Locality</th> <th>Postal Code</th> <th>Latitude</th> <th>Longitude</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const srch = document.getElementById('srch');
+        const tblBody = document.querySelector('#tbl tbody');
+
+        async function update_content(srchTerm) {
+            const cafes = await findCaliforniaCafes(srchTerm);
+
+            tblBody.innerHTML = '';
+
+            cafes.forEach(cafe => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${cafe.name}</td>
+                    <td>${cafe.street_no}</td>
+                    <td>${cafe.locality}</td>
+                    <td>${cafe.postal_code}</td>
+                    <td>${cafe.lat}</td>
+                    <td>${cafe.long}</td>
+                `;
+                tblBody.appendChild(row);
+            });
+        }
+
+        srch.addEventListener('input', () => {
+            const srchTerm = srch.value.trim();
+            update_content(srchTerm);
+        });
+
+        update_content('');
+    });
+</script>
+</body>
+</html>
